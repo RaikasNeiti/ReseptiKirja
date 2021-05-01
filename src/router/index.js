@@ -1,21 +1,21 @@
 import Router from "vue-router"
-import HelloWorld from "@/components/HelloWorld";
 import Vue from 'vue'
-import Users from "@/components/Users";
+import Home from "@/components/Home";
+import AddSivu from "@/components/AddSivu";
 
 
 
 Vue.use(Router)
 const routes= [
     {
-        path: "/hello",
-        name: "hello",
-        component: HelloWorld,
+        path: "/Add",
+        name: "Add",
+        component: AddSivu,
     },
     {
         path: '/',
         name: "home",
-        component: Users,
+        component: Home,
     }
 ]
 

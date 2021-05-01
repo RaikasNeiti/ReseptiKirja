@@ -27,7 +27,6 @@
 </template>
 <script>
 
-
 export default {
   name: 'searcharvo',
   props: {
@@ -42,7 +41,7 @@ export default {
       this.searcharvo = ''
     },
     lisaa: function (){
-      this.$router.push('hello')
+      this.$router.push('Add')
     }
 
   }
