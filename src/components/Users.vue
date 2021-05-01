@@ -26,7 +26,6 @@
   </div>
 </template>
 <script>
-import Router from "vue-router";
 
 
 export default {
@@ -43,7 +42,7 @@ export default {
       this.searcharvo = ''
     },
     lisaa: function (){
-      Router.push({ name: "Jotain"})
+      this.$router.push('hello')
     }
 
   }
