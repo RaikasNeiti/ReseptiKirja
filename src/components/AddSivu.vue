@@ -2,9 +2,9 @@
   <div class="hello">
     <h1>testaus</h1>
       <label for="Nimi">Nimi: </label>
-      <input type="text" id="Nimi"> <br><br>
+      <input v-model="nimi" type="text" id="Nimi"> <br><br>
       <label for="Valmistusaika">Valmistusaika: </label>
-      <input type="text" id="Valmistusaika"> minuuttia<br><br>
+      <input v-model="aika" type="text" id="Valmistusaika"> minuuttia<br><br>
 
 
     <div id="ulli">
@@ -21,20 +21,23 @@
     </div>
 
       <label for="Ohje">Ohje: </label>
-      <input type="text" id="Ohje"> <br><br>
+      <input v-model="ohje" type="textarea" id="Ohje"> <br><br>
     <label for="Author">Tekijä: </label>
-    <input type="text" id="Author"> <br><br>
+    <input v-model="author" type="text" id="Author"> <br><br>
+    <button v-on:click="save()">Save</button>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'AddSivu',
   el: '#ulli',
   props: ['title'],
 
   data: function (){
-    return {Ainekset: []}
+    return {Ainekset: [], nimi: '', aika: '', ohje: '', author: ''}
   },
   methods: {
     add: function(){
@@ -43,6 +46,11 @@ export default {
     },
     asd: function (index){
       this.Ainekset.splice(index,1)
+    },
+    save: function (){
+
+      axios
+        .get('http://localhost:8081/add?nimi=' + this.nimi + '&aika=' + this.aika + '&Ainekset=' + JSON.stringify(this.Ainekset) + '&ohje=' + this.ohje + '&author=' + this.author)
     }
   }
 

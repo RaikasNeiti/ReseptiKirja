@@ -7,8 +7,8 @@ const util = require('util');
 
 let con = mysql.createConnection({
     host: "localhost",
-    user: "root",
-    password: "olsodb",
+    user: "fjdb",
+    password: "metropolia",
     database: "recipedb"
 });
 const query = util.promisify(con.query).bind(con);
@@ -50,7 +50,21 @@ app.get("/recipe", function (req, res) {
     })()
 })
 
-
+app.get("/add", function (req, res) {
+    let sql = "INSERT INTO recipes(name, ingredients, instructions, cookingtime, maker)"
+        + "VALUES('" + req.query.nimi + "', '" + req.query.Ainekset + "', '"+ req.query.ohje +"', '"+ req.query.aika +"', '"+ req.query.author +"')";
+    console.log(sql);
+    (async () => {
+        try {
+            console.log("test")
+            const rows = await query(sql);
+            console.log(rows);
+            res.send(rows);
+        } catch (err) {
+            console.log("error");
+        }
+    })()
+});
 
 
 
