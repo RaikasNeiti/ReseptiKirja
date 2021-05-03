@@ -22,6 +22,8 @@
 
       <label for="Ohje">Ohje: </label>
       <input type="text" id="Ohje"> <br><br>
+    <label for="Author">Tekijä: </label>
+    <input type="text" id="Author"> <br><br>
   </div>
 </template>
 
