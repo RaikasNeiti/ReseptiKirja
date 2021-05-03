@@ -16,24 +16,25 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="user in users" v-bind:key="user.id">
-        <th scope="row">{{user.id}}</th>
-        <td>{{user.name}}</td>
-        <td>{{user.email}}</td>
+      <tr v-for="recipe in recipes" v-bind:key="recipe.name">
+        <th scope="row" v-on:click="resepti(recipe.id)">{{recipe.name}}</th>
+        <td>{{recipe.cookingtime}}</td>
+        <td>{{recipe.maker}}</td>
       </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script>
-
+import axios from 'axios';
 export default {
-  name: 'searcharvo',
+  name: 'recipes',
+
   props: {
 
   },
   data: function (){
-    return {searcharvo: ""};
+    return {recipes: null, searcharvo: "",};
 
   },
   methods: {
@@ -42,7 +43,19 @@ export default {
     },
     lisaa: function (){
       this.$router.push('Add')
+    },
+    resepti: function (id){
+      this.$router.push({name: 'recipe', query: {id: id}})
     }
+
+  },
+  created: function () {
+      axios
+        .get('http://localhost:8081/recipes')
+        .then(res => {
+          this.recipes = res.data;
+          console.log(this.recipes)
+        })
 
   }
 }
