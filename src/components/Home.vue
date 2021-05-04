@@ -2,10 +2,8 @@
   <div class="container">
     <div>
       <input v-model="searcharvo" type="text" placeholder="Haku">
-      <button v-on:click="hae()">Hae</button>
-      <p>Message is: {{ searcharvo }}</p>
     </div>
-    <button v-on:click="lisaa()">Lisaa</button>
+
     <h3>Reseptit:</h3>
     <table class="table">
       <thead>
@@ -16,10 +14,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="recipe in recipes" v-bind:key="recipe.name">
-        <th scope="row" v-on:click="resepti(recipe.id)">{{recipe.name}}</th>
-        <td>{{recipe.cookingtime}}</td>
-        <td>{{recipe.maker}}</td>
+      <tr v-for="recipe in filteredList" v-bind:key="recipe.name">
+        <th scope="row" v-on:click="resepti(recipe.id)">{{recipe.nimi}}</th>
+        <td>{{recipe.aika}}</td>
+        <td>{{recipe.author}}</td>
       </tr>
       </tbody>
     </table>
@@ -27,14 +25,22 @@
 </template>
 <script>
 import axios from 'axios';
+
+class Recipe {
+  constructor(id, nimi ,aika , tekijä) {
+    this.id = id;
+    this.nimi = nimi;
+    this.aika = aika;
+    this.author = tekijä;
+  }
+}
 export default {
   name: 'recipes',
-
   props: {
 
   },
   data: function (){
-    return {recipes: null, searcharvo: "",};
+    return {recipes: [], searcharvo: "",recipelist: ''};
 
   },
   methods: {
@@ -53,10 +59,20 @@ export default {
       axios
         .get('http://localhost:8081/recipes')
         .then(res => {
-          this.recipes = res.data;
+          let tempRecipes = res.data;
+          for(let i = 0; i< tempRecipes.length; i++){
+              this.recipes.push(new Recipe(tempRecipes[i].id,tempRecipes[i].name,tempRecipes[i].cookingtime,tempRecipes[i].maker))
+          }
           console.log(this.recipes)
         })
 
+  },
+  computed: {
+    filteredList() {
+      return this.recipes.filter(recipe => {
+        return recipe.nimi.toLowerCase().includes(this.searcharvo.toLowerCase())
+      })
+    }
   }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <p>testaus</p>
+    <router-link to="/" ><img src="./assets/rsepti.png"></router-link>
+    <router-link to="/add" v-if="this.$route.name != 'Add'"><img src="./assets/lisää.png"></router-link>
     <router-view></router-view>
   </div>
 </template>

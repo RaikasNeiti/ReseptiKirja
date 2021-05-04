@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>testaus</h1>
-      <label for="Nimi">Reseptin nimi: </label>
+      <label for="Nimi">Nimi: </label>
       <input v-model="nimi" type="text" id="Nimi"> <br><br>
       <label for="Valmistusaika">Valmistusaika: </label>
       <input v-model="aika" type="text" id="Valmistusaika"> minuuttia<br><br>
@@ -10,17 +10,18 @@
     <div id="ulli">
       <form v-on:submit.prevent="add">
       <label for="Ainesosat">Aineosat: </label>
-      <input v-model="newAines" type="text" id="Ainesosat" >
+      <input v-model="newAines" type="text" id="Ainesosat">
       <button>Add</button><br><br>
       </form>
     <ul>
       <template v-for="a in Ainekset">
-        <li :key="a">{{a }}<button v-on:click="asd(Ainekset.indexOf(a))"> Remove</button></li>
+        <li :key="a">{{a}}<button v-on:click="asd(Ainekset.indexOf(a))">Remove</button></li>
       </template>
     </ul>
     </div>
-    <label>Ohje:</label><br>
-    <textarea v-model="ohje" id="Ohje">Ohje...</textarea> <br><br>
+
+      <label for="Ohje">Ohje: </label>
+      <input v-model="ohje" type="textarea" id="Ohje"> <br><br>
     <label for="Author">Tekijä: </label>
     <input v-model="author" type="text" id="Author"> <br><br>
     <button v-on:click="save()">Save</button>
@@ -45,20 +46,9 @@ export default {
       this.Ainekset.splice(index,1)
     },
     save: function (){
-      if (this.nimi != '' && this.aika != "" && !isNaN(this.aika) && this.ohje != "" && this.author != "" ) {
-        axios
-            .get('http://localhost:8081/add?nimi=' + this.nimi + '&aika=' + this.aika + '&Ainekset=' + JSON.stringify(this.Ainekset) + '&ohje=' + this.ohje + '&author=' + this.author)
-            .then(res => {
-              let adress = res.data;
-              console.log(adress.insertId);
-              this.$router.push({name: 'recipe', query: {id: adress.insertId}})
-            })
-        console.log("saved");
-      }
-      else {
-        console.log("not Saved")
-        alert("Kaikki kohdat täytyy olla täytetty");
-      }
+
+      axios
+        .get('http://localhost:8081/add?nimi=' + this.nimi + '&aika=' + this.aika + '&Ainekset=' + JSON.stringify(this.Ainekset) + '&ohje=' + this.ohje + '&author=' + this.author)
     }
   }
 
@@ -72,32 +62,5 @@ h3 {
 }
 a {
   color: #42b983;
-}
-ul{
-  list-style-type: none;
-}
-
-
-#Ohje{
-  width: 280px;
-  height: 150px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  font-size: 16px;
-  resize: none;
-}
-input{
-  outline: none;
-  background-color: #f8f8f8;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-}
-input[type=text]:focus {
-  outline: none;
-  border: 3px solid #555;
 }
 </style>
