@@ -33,11 +33,9 @@ import axios from "axios";
 
 export default {
   name: 'AddSivu',
-  el: '#ulli',
   props: ['title'],
-
   data: function (){
-    return {Ainekset: [], nimi: '', aika: '', ohje: '', author: ''}
+    return {Ainekset: [], nimi: '', aika: '', ohje: '', author: '', newAines: ''}
   },
   methods: {
     add: function(){
