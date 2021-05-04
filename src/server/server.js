@@ -86,8 +86,8 @@ app.get("/delete", function (req, res) {
 
 app.get("/update", function (req, res) {
     let sql = "UPDATE recipes"
-        + "SET name= '" + req.query.nimi + "', ingredients= '" + req.query.Ainekset + "', instructions= '"+ req.query.ohje +"', cookingtime= '"+ req.query.aika +"', maker= '"+ req.query.author +"')"
-        + "WHERE id ='" + req.query.id + "'";
+        + " SET name= '" + req.query.nimi + "', ingredients= '" + req.query.Ainekset + "', instructions= '"+ req.query.ohje +"', cookingtime= '"+ req.query.aika +"', maker= '"+ req.query.author +"'"
+        + " WHERE id ='" + req.query.id + "'";
     console.log(sql);
     (async () => {
         try {

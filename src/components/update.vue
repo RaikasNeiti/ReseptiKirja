@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-  <label for="Nimi">Nimi: </label>
+  <label for="Nimi">Reseptin nimi: </label>
   <input v-model="nimi" type="text" id="Nimi"> <br><br>
   <label for="Valmistusaika">Valmistusaika: </label>
   <input v-model="aika" type="text" id="Valmistusaika"> minuuttia<br><br>
@@ -19,8 +19,8 @@
     </ul>
   </div>
 
-  <label for="Ohje">Ohje: </label>
-  <input v-model="ohje" type="textarea" id="Ohje"> <br><br>
+    <label>Ohje:</label><br>
+    <textarea v-model="ohje" id="Ohje">Ohje...</textarea> <br><br>
   <label for="Author">Tekijä: </label>
   <input v-model="author" type="text" id="Author"> <br><br>
   <button v-on:click="save()">Save</button>
@@ -43,20 +43,37 @@ name: "update",
     asd: function (index) {
       this.ainekset.splice(index, 1)
     },
+    save: function (){
+      if(confirm("Do you really want to save?")) {
+        if (this.nimi != '' && this.aika != "" && !isNaN(this.aika) && this.ohje != "" && this.author != "") {
+          let id = this.$route.query.id;
+          axios
+              .get('http://localhost:8081/update?nimi=' + this.nimi + '&id=' + this.$route.query.id + '&aika=' + this.aika + '&Ainekset=' + JSON.stringify(this.ainekset) + '&ohje=' + this.ohje + '&author=' + this.author)
+              .then( function (){
+                console.log(id);
+
+              })
+          this.$router.push({name: 'recipe', query: {id: id}})
+          console.log("saved");
+        } else {
+          console.log("not Saved")
+          alert("Kaikki kohdat täytyy olla täytetty");
+        }
+      }
+    }
   },
   created: function () {
     axios
         .get('http://localhost:8081/recipe?id='+ this.$route.query.id)
         .then(res => {
           let recipe = res.data;
-          console.log(recipe[0].ingredients)
 
           this.ainekset = JSON.parse(recipe[0].ingredients);
 
           this.nimi= recipe[0].name;
           this.ohje = recipe[0].instructions;
           this.aika = recipe[0].cookingtime;
-          this.author = recipe[0].cookingtime;
+          this.author = recipe[0].maker;
 
         })
 
@@ -65,5 +82,37 @@ name: "update",
 </script>
 
 <style scoped>
+h3 {
+  margin: 40px 0 0;
+}
+a {
+  color: #42b983;
+}
+ul{
+  list-style-type: none;
+}
 
+
+#Ohje{
+  width: 280px;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+input{
+  outline: none;
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+input[type=text]:focus {
+  outline: none;
+  border: 3px solid #555;
+}
 </style>

@@ -20,12 +20,15 @@ export default {
       this.$router.push({name: 'update', query: {id: this.$route.query.id}})
     },
     poista: function () {
-      axios
-        .get('http://localhost:8081/delete?id='+ this.$route.query.id)
-          .then(res => {
-            let response = res.data;
-            console.log(response)
-          })
+      if(confirm("Do you really want to delete?")) {
+        axios
+            .get('http://localhost:8081/delete?id=' + this.$route.query.id)
+            .then(res => {
+              let response = res.data;
+              console.log(response)
+              this.$router.go(-1)
+            })
+      }
     }
   },
   created: function () {
