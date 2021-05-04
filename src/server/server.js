@@ -70,7 +70,7 @@ app.get("/add", function (req, res) {
 app.get("/delete", function (req, res) {
     let id = req.query.id;
     console.log(id);
-    let sql = "DELETE" + " * " + "FROM recipes"
+    let sql = "DELETE FROM recipes"
         + " WHERE id ='"+ id + "'";
     (async () => {
         try {

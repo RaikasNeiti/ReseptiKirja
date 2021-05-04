@@ -13,8 +13,8 @@
       <button>Add</button><br><br>
     </form>
     <ul>
-      <template v-for="a in ainekset">
-        <li :key="a">{{a}}<button v-on:click="asd(ainekset.indexOf(a))">Remove</button></li>
+      <template v-for="(a,index) in ainekset">
+        <li :key="index">{{a}}<button v-on:click="asd(ainekset.indexOf(a))">Remove</button></li>
       </template>
     </ul>
   </div>
@@ -51,7 +51,8 @@ name: "update",
           let recipe = res.data;
           console.log(recipe[0].ingredients)
 
-          this.ainekset = recipe[0].ingredients
+          this.ainekset = JSON.parse(recipe[0].ingredients);
+
           this.nimi= recipe[0].name;
           this.ohje = recipe[0].instructions;
           this.aika = recipe[0].cookingtime;
