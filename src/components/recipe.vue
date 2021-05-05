@@ -94,6 +94,7 @@ p{
   float:left;
   width:25%;
   height:auto;
+  background-color: #f8f8f8;
 }
 #ohje{
   word-wrap: break-word;
@@ -101,6 +102,7 @@ p{
   float:right;
   width:25%;
   height:auto;
+  background-color: #f8f8f8;
 }
 #ohjeohje{
   font-size: 20px;

@@ -5,6 +5,8 @@
     </div>
 
     <h3>Reseptit:</h3>
+    <div id="reseptitable">
+      <div id="textresepti">
     <table class="table">
       <thead>
       <tr>
@@ -13,6 +15,7 @@
         <th scope="col">Tekijä</th>
       </tr>
       </thead>
+
       <tbody>
       <tr v-for="recipe in filteredList" v-bind:key="recipe.name">
         <th scope="row" v-on:click="resepti(recipe.id)">{{recipe.nimi}}</th>
@@ -21,6 +24,8 @@
       </tr>
       </tbody>
     </table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -78,6 +83,26 @@ export default {
 </script>
 <style>
 h3 {
-  margin-bottom: 5%;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.table{
+  align-self: center;
+  margin: auto;
+
+}
+#textresepti{
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+  background-color: #f8f8f8;
+}
+#reseptitable{
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+
 }
 </style>

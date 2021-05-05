@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>testaus</h1>
+    <h1>Lisää Resepti</h1>
       <label for="Nimi">Nimi: </label>
       <input v-model="nimi" type="text" id="Nimi"> <br><br>
       <label for="Valmistusaika">Valmistusaika: </label>
@@ -11,11 +11,11 @@
       <form v-on:submit.prevent="add">
       <label for="Ainesosat">Aineosat: </label>
       <input v-model="newAines" type="text" id="Ainesosat">
-      <button>Add</button><br><br>
+      <button>Lisää</button><br><br>
       </form>
     <ul>
       <template v-for="a in Ainekset">
-        <li :key="a">{{a}}<button v-on:click="asd(Ainekset.indexOf(a))">Remove</button></li>
+        <li :key="a">{{a}}<button v-on:click="asd(Ainekset.indexOf(a))">Poista</button></li>
       </template>
     </ul>
     </div>
@@ -24,7 +24,7 @@
       <input v-model="ohje" type="textarea" id="Ohje"> <br><br>
     <label for="Author">Tekijä: </label>
     <input v-model="author" type="text" id="Author"> <br><br>
-    <button v-on:click="save()">Save</button>
+    <button v-on:click="save()">Tallenna</button>
   </div>
 </template>
 
@@ -62,5 +62,32 @@ h3 {
 }
 a {
   color: #42b983;
+}
+ul{
+  list-style-type: none;
+}
+
+
+#Ohje{
+  width: 280px;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+input{
+  outline: none;
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+input[type=text]:focus {
+  outline: none;
+  border: 3px solid #555;
 }
 </style>
