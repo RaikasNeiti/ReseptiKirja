@@ -115,7 +115,7 @@ p{
   margin-bottom: 10px;
 }
 ul{
-  padding: 0px;
+  padding: 0;
   text-align: left;
   list-style-type: none;
   margin-left: 25%;

@@ -3,7 +3,9 @@ let app = express();
 let mysql = require('mysql');
 let cors = require('cors')
 const util = require('util');
-const {query, validationResult} = require('express-validator')
+let bodyParser = require('body-parser')
+app.use(bodyParser.json())
+const {body, query, validationResult} = require('express-validator')
 
 
 let con = mysql.createConnection({
@@ -59,12 +61,12 @@ app.get("/recipe",
     }
 })
 
-app.get("/add",
-    query('nimi').isLength({min: 2,max: 25}),
-    query('Ainekset').isLength({min:2,max: 1000}),
-    query('ohje').isLength({min: 20,max : 1000}),
-    query('aika').isNumeric(),
-    query('author').isLength({min: 2, max: 25}),
+app.post("/add",
+    body('nimi').isLength({min: 2,max: 25}).withMessage('nimi'),
+    body('Ainekset').isLength({min:2,max: 1000}),
+    body('ohje').isLength({min: 20,max : 1000}),
+    body('aika').isNumeric(),
+    body('author').isLength({min: 2, max: 25}),
     function (req, res) {
     const errors = validationResult(req);
     console.log(errors);
@@ -72,7 +74,7 @@ app.get("/add",
         res.send("parametrit")
     }else {
         let sql = "INSERT INTO recipes(name, ingredients, instructions, cookingtime, maker)"
-            + "VALUES('" + req.query.nimi + "', '" + req.query.Ainekset + "', '"+ req.query.ohje +"', '"+ req.query.aika +"', '"+ req.query.author +"')";
+            + "VALUES('" + req.body.nimi + "', '" + req.body.Ainekset + "', '"+ req.body.ohje +"', '"+ req.body.aika +"', '"+ req.body.author +"')";
         console.log(sql);
         (async () => {
             try {
@@ -92,6 +94,8 @@ app.get("/delete",
     function (req, res) {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
+        res.send("parametrit")
+    }else {
         let id = req.query.id;
         console.log(id);
         let sql = "DELETE FROM recipes"
@@ -106,24 +110,26 @@ app.get("/delete",
                 console.log("error");
             }
         })()
-    }else {
-        res.send("parametrit")
+
     }
 })
 
-app.get("/update",
-    query('id').isNumeric(),
-    query('nimi').isLength({min: 2,max: 25}),
-    query('Ainekset').isLength({min:2,max: 1000}),
-    query('ohje').isLength({min: 20,max : 1000}),
-    query('aika').isNumeric(),
-    query('author').isLength({min: 2, max: 25}),
-    function (req, res) {
+app.post('/update',
+    body('id').isNumeric(),
+    body('nimi').isLength({min: 2,max: 25}),
+    body('Ainekset').isLength({min:2,max: 1000}),
+    body('ohje').isLength({min: 20,max : 1000}),
+    body('aika').isNumeric(),
+    body('author').isLength({min: 2, max: 25}),
+    (req, res) => {
     const errors = validationResult(req);
+    console.log(errors);
     if(!errors.isEmpty()){
+        res.send("parametrit")
+    }else {
         let sql = "UPDATE recipes"
-            + " SET name= '" + req.query.nimi + "', ingredients= '" + req.query.Ainekset + "', instructions= '"+ req.query.ohje +"', cookingtime= '"+ req.query.aika +"', maker= '"+ req.query.author +"'"
-            + " WHERE id ='" + req.query.id + "'";
+            + " SET name= '" + req.body.nimi + "', ingredients= '" + req.body.Ainekset + "', instructions= '"+ req.body.ohje +"', cookingtime= '"+ req.body.aika +"', maker= '"+ req.body.author +"'"
+            + " WHERE id ='" + req.body.id + "'";
         console.log(sql);
         (async () => {
             try {
@@ -135,8 +141,6 @@ app.get("/update",
                 console.log("error");
             }
         })()
-    }else {
-        res.send("parametrit")
     }
 });
 

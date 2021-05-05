@@ -20,7 +20,7 @@
     </ul>
     </div>
 
-    <label>Ohje:</label><br>
+    <label for="Ohje">Ohje:</label><br>
     <textarea v-model="ohje" id="Ohje"></textarea> <br><br>
     <label for="Author">Tekijä: </label>
     <input v-model="author" type="text" id="Author"> <br><br>
@@ -45,14 +45,21 @@ export default {
     asd: function (index){
       this.Ainekset.splice(index,1)
     },
-    save: function (){
+    save: async function (){
         if (this.nimi !== '' && this.aika !== "" && !isNaN(this.aika) && this.ohje !== "" && this.author !== "") {
-      axios
-        .get('http://localhost:8081/add?nimi=' + this.nimi + '&aika=' + this.aika + '&Ainekset=' + JSON.stringify(this.Ainekset) + '&ohje=' + this.ohje + '&author=' + this.author)
+          console.log(this.Ainekset)
+      await axios
+        .post('http://localhost:8081/add',{
+              nimi: this.nimi,
+              Ainekset: JSON.stringify(this.Ainekset),
+              ohje: this.ohje,
+              aika: this.aika,
+              author: this.author
+        })
           .then(res => {
             let adress = res.data;
             if(adress === "parametrit"){
-              alert("virheeliste syötteet")
+              alert("virheeliset syötteet")
             }else {
               console.log(adress.insertId);
               this.$router.push({name: 'recipe', query: {id: adress.insertId}})

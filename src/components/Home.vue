@@ -88,12 +88,7 @@ th{
   margin: auto;
 
 }
-#textresepti{
-  margin: auto;
-  width: 50%;
-  padding: 10px;
-  text-align: center;
-}
+
 #reseptitable{
   background-color: #f8f8f8;
   margin: auto;

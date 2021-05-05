@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <router-link id="reseptikirja" to="/" ><img src="./assets/rsepti.png"></router-link>
-    <router-link id="lisääresepti" to="/add" v-if="this.$route.name != 'Add'"><img src="./assets/lisää.png"></router-link>
+    <router-link id="reseptikirja" to="/" ><img src="./assets/rsepti.png" alt="logo"></router-link>
+    <router-link id="lisääresepti" to="/add" v-if="this.$route.name !== 'Add'"><img src="./assets/lisää.png" alt="lisää kuva"></router-link>
     <router-view></router-view>
   </div>
 </template>

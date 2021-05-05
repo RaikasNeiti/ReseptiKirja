@@ -19,7 +19,7 @@
     </ul>
   </div>
 
-    <label>Ohje:</label><br>
+    <label for="Ohje">Ohje:</label><br>
     <textarea v-model="ohje" id="Ohje">Ohje...</textarea> <br><br>
   <label for="Author">Tekijä: </label>
   <input v-model="author" type="text" id="Author"> <br><br>
@@ -43,17 +43,20 @@ name: "update",
     asd: function (index) {
       this.ainekset.splice(index, 1)
     },
-    save: function (){
+    save: async function (){
       if(confirm("Do you really want to save?")) {
-        if (this.nimi != '' && this.aika != "" && !isNaN(this.aika) && this.ohje != "" && this.author != "") {
+        if (this.nimi !== '' && this.aika !== "" && !isNaN(this.aika) && this.ohje !== "" && this.author !== "") {
           let id = this.$route.query.id;
-          axios
-              .get('http://localhost:8081/update?nimi=' + this.nimi + '&id=' + this.$route.query.id + '&aika=' + this.aika + '&Ainekset=' + JSON.stringify(this.ainekset) + '&ohje=' + this.ohje + '&author=' + this.author)
-              .then( function (){
-                console.log(id);
-
+         await axios.post('http://localhost:8081/update', {
+                nimi: this.nimi,
+                id: this.$route.query.id,
+                Ainekset: JSON.stringify(this.ainekset),
+                ohje: this.ohje,
+                aika: this.aika,
+                author: this.author
               })
-          this.$router.push({name: 'recipe', query: {id: id}})
+
+          await this.$router.push({name: 'recipe', query: {id: id}})
           console.log("saved");
         } else {
           console.log("not Saved")
@@ -67,9 +70,7 @@ name: "update",
         .get('http://localhost:8081/recipe?id='+ this.$route.query.id)
         .then(res => {
           let recipe = res.data;
-
           this.ainekset = JSON.parse(recipe[0].ingredients);
-
           this.nimi= recipe[0].name;
           this.ohje = recipe[0].instructions;
           this.aika = recipe[0].cookingtime;
