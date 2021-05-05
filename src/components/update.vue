@@ -10,11 +10,11 @@
     <form v-on:submit.prevent="add">
       <label for="Ainesosat">Aineosat: </label>
       <input v-model="newAines" type="text" id="Ainesosat">
-      <button>Add</button><br><br>
+      <button>Lisää</button><br><br>
     </form>
     <ul>
       <template v-for="(a,index) in ainekset">
-        <li :key="index">{{a}}<button v-on:click="asd(ainekset.indexOf(a))">Remove</button></li>
+        <li :key="index">{{a}}<button v-on:click="asd(ainekset.indexOf(a))">Poista</button></li>
       </template>
     </ul>
   </div>
@@ -23,7 +23,7 @@
     <textarea v-model="ohje" id="Ohje">Ohje...</textarea> <br><br>
   <label for="Author">Tekijä: </label>
   <input v-model="author" type="text" id="Author"> <br><br>
-  <button v-on:click="save()">Save</button>
+  <button v-on:click="save()">Päivitä</button>
   </div>
 </template>
 

@@ -19,7 +19,7 @@
       <tbody>
       <tr v-for="recipe in filteredList" v-bind:key="recipe.name">
         <th scope="row" v-on:click="resepti(recipe.id)">{{recipe.nimi}}</th>
-        <td>{{recipe.aika}}</td>
+        <td>{{recipe.aika}} min</td>
         <td>{{recipe.author}}</td>
       </tr>
       </tbody>

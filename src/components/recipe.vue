@@ -4,8 +4,8 @@
       <p id="nimi">{{nimi}}</p>
       <p id="author">Tekijä: {{author}}</p>
       <div id="buttons">
-        <button v-on:click="päivitä()">update</button>
-        <button v-on:click="poista()">delete</button>
+        <button v-on:click="päivitä()">Päivitä</button>
+        <button v-on:click="poista()">Poista</button>
       </div>
     </div>
 
