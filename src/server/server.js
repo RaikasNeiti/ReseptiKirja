@@ -51,7 +51,7 @@ app.get("/recipe", function (req, res) {
     })()
 })
 
-app.put("/add", function (req, res) {
+app.get("/add", function (req, res) {
     let sql = "INSERT INTO recipes(name, ingredients, instructions, cookingtime, maker)"
         + "VALUES('" + req.query.nimi + "', '" + req.query.Ainekset + "', '"+ req.query.ohje +"', '"+ req.query.aika +"', '"+ req.query.author +"')";
     console.log(sql);
@@ -67,7 +67,7 @@ app.put("/add", function (req, res) {
     })()
 });
 
-app.delete("/delete", function (req, res) {
+app.get("/delete", function (req, res) {
     let id = req.query.id;
     console.log(id);
     let sql = "DELETE FROM recipes"
@@ -84,7 +84,7 @@ app.delete("/delete", function (req, res) {
     })()
 })
 
-app.put("/update", function (req, res) {
+app.get("/update", function (req, res) {
     let sql = "UPDATE recipes"
         + " SET name= '" + req.query.nimi + "', ingredients= '" + req.query.Ainekset + "', instructions= '"+ req.query.ohje +"', cookingtime= '"+ req.query.aika +"', maker= '"+ req.query.author +"'"
         + " WHERE id ='" + req.query.id + "'";

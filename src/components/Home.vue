@@ -6,7 +6,6 @@
 
     <h3>Reseptit:</h3>
     <div id="reseptitable">
-      <div id="textresepti">
     <table class="table">
       <thead>
       <tr>
@@ -24,7 +23,6 @@
       </tr>
       </tbody>
     </table>
-      </div>
     </div>
   </div>
 </template>
@@ -86,6 +84,11 @@ h3 {
   margin-bottom: 20px;
   font-weight: bold;
 }
+th{
+  padding: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 .table{
   align-self: center;
   margin: auto;
@@ -96,9 +99,9 @@ h3 {
   width: 50%;
   padding: 10px;
   text-align: center;
-  background-color: #f8f8f8;
 }
 #reseptitable{
+  background-color: #f8f8f8;
   margin: auto;
   width: 50%;
   padding: 10px;
