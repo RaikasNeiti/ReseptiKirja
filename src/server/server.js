@@ -3,7 +3,7 @@ let app = express();
 let mysql = require('mysql');
 let cors = require('cors')
 const util = require('util');
-const {body, validationResult} = require('express-validator')
+const {query, validationResult} = require('express-validator')
 
 
 let con = mysql.createConnection({
@@ -12,7 +12,7 @@ let con = mysql.createConnection({
     password: "olso",
     database: "recipedb"
 });
-const query = util.promisify(con.query).bind(con);
+const sqlquery = util.promisify(con.query).bind(con);
 
 app.use(express.static('public'));
 app.use(cors())
@@ -24,7 +24,7 @@ app.get("/recipes", function (req, res) {
     (async () => {
         try {
             console.log("test")
-            const rows = await query(sql);
+            const rows = await sqlquery(sql);
             console.log(rows);
             res.send(rows);
         } catch (err) {
@@ -35,17 +35,20 @@ app.get("/recipes", function (req, res) {
 
 
 app.get("/recipe",
-    body('id').isNumber(),
-    function (req, res) {
+    query('id').isNumeric(),
+    (req, res) => {
     const errors = validationResult(req);
+    console.log(errors );
     if(!errors.isEmpty()){
+        res.send("parametrit")
+    }else {
         let id = req.query.id;
         console.log(id);
         let sql = "SELECT" + " * " + "FROM recipes"
-        + " WHERE id ='"+ id + "'";
+            + " WHERE id ='"+ id + "'";
         (async () => {
             try {
-                const rows = await query(sql, [id]);
+                const rows = await sqlquery(sql, [id]);
                 console.log(rows);
                 res.send(rows);
 
@@ -53,40 +56,39 @@ app.get("/recipe",
                 console.log("error");
             }
         })()
-    }else {
-        res.send("parametrit")
     }
 })
 
 app.get("/add",
-    body('nimi').isLenght({min: 2,max: 25}),
-    body('Ainekset').isLenght({min:2,max: 1000}),
-    body('ohje').isLenght({min: 20,max : 1000}),
-    body('aika').isNumber(),
-    body('author').isLenght({min: 2, max: 25}),
+    query('nimi').isLength({min: 2,max: 25}),
+    query('Ainekset').isLength({min:2,max: 1000}),
+    query('ohje').isLength({min: 20,max : 1000}),
+    query('aika').isNumeric(),
+    query('author').isLength({min: 2, max: 25}),
     function (req, res) {
     const errors = validationResult(req);
+    console.log(errors);
     if(!errors.isEmpty()){
+        res.send("parametrit")
+    }else {
         let sql = "INSERT INTO recipes(name, ingredients, instructions, cookingtime, maker)"
             + "VALUES('" + req.query.nimi + "', '" + req.query.Ainekset + "', '"+ req.query.ohje +"', '"+ req.query.aika +"', '"+ req.query.author +"')";
         console.log(sql);
         (async () => {
             try {
                 console.log("test")
-                const rows = await query(sql);
+                const rows = await sqlquery(sql);
                 console.log(rows);
                 res.send(rows);
             } catch (err) {
                 console.log("error");
             }
         })()
-    }else {
-        res.send("parametrit")
     }
 });
 
 app.get("/delete",
-    body('id').isNumber(),
+    query('id').isNumeric(),
     function (req, res) {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -96,7 +98,7 @@ app.get("/delete",
             + " WHERE id ='"+ id + "'";
         (async () => {
             try {
-                const rows = await query(sql, [id]);
+                const rows = await sqlquery(sql, [id]);
                 console.log(rows);
                 res.send(rows);
 
@@ -110,12 +112,12 @@ app.get("/delete",
 })
 
 app.get("/update",
-    body('id').isNumber(),
-    body('nimi').isLenght({min: 2,max: 25}),
-    body('Ainekset').isLenght({min:2,max: 1000}),
-    body('ohje').isLenght({min: 20,max : 1000}),
-    body('aika').isNumber(),
-    body('author').isLenght({min: 2, max: 25}),
+    query('id').isNumeric(),
+    query('nimi').isLength({min: 2,max: 25}),
+    query('Ainekset').isLength({min:2,max: 1000}),
+    query('ohje').isLength({min: 20,max : 1000}),
+    query('aika').isNumeric(),
+    query('author').isLength({min: 2, max: 25}),
     function (req, res) {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -126,7 +128,7 @@ app.get("/update",
         (async () => {
             try {
                 console.log("test")
-                const rows = await query(sql);
+                const rows = await sqlquery(sql);
                 console.log(rows);
                 res.send(rows);
             } catch (err) {
