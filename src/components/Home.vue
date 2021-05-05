@@ -19,7 +19,7 @@
       <tr v-for="recipe in filteredList" v-bind:key="recipe.name">
         <th scope="row" v-on:click="resepti(recipe.id)">{{recipe.nimi}}</th>
         <td>{{recipe.aika}} min</td>
-        <td>{{recipe.author}}</td>
+        <td>{{recipe.tekijä}}</td>
       </tr>
       </tbody>
     </table>
@@ -34,7 +34,7 @@ class Recipe {
     this.id = id;
     this.nimi = nimi;
     this.aika = aika;
-    this.author = tekijä;
+    this.tekijä = tekijä;
   }
 }
 export default {
@@ -47,12 +47,6 @@ export default {
 
   },
   methods: {
-    hae: function(){
-      this.searcharvo = ''
-    },
-    lisaa: function (){
-      this.$router.push('Add')
-    },
     resepti: function (id){
       this.$router.push({name: 'recipe', query: {id: id}})
     }
