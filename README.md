@@ -1,23 +1,43 @@
 # reseptikirjaprojecti
 
-## Project setup
+## Tietokannan Luonti
 ```
-npm install
+CREATE DATABASE recipedb;
+
+CREATE TABLE recipes(
+	id INT AUTO_INCREMENT,
+	name VARCHAR(25),
+	ingredients VARCHAR(1000),
+	instructions VARCHAR(1000),
+	cookingtime INT,
+	maker VARCHAR(25),
+	PRIMARY KEY(ID));
 ```
 
-### Compiles and hot-reloads for development
+### REST API
+
+GET /recipes
 ```
-npm run serve
+Hakee ja palauttaa kaikki reseptit databasesta.
 ```
 
-### Compiles and minifies for production
+GET /recipe
 ```
-npm run build
+Hakee ja palauttaa id perusteella databasen.
 ```
-
-### Lints and fixes files
+POST /recipes
 ```
-npm run lint
+Luo uuden respetin. 
+Syötteet: nimi, Ainekset, ohje, aika, author
+```
+DELETE /recipes
+```
+Poistetaan olemassa oleva reseptiä id:n perusteella.
+```
+PUT /recipes
+```
+Päivitetään olemassa olevaa reseptiä id:n perusteella.
+Syötteet: id, nimi, Ainekset, ohje, aika, author.
 ```
 
 ### Customize configuration
