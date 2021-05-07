@@ -50,18 +50,23 @@ app.get("/recipe",
             + " WHERE id ='"+ id + "'";
         (async () => {
             try {
-                const rows = await sqlquery(sql, [id]);
+                let rows = await sqlquery(sql, [id]);
                 console.log(rows);
-                res.send(rows);
-
-            } catch (err) {
+                if (!rows.length) {
+                    console.log("error");
+                } else {
+                    res.send(rows);
+                }
+            }catch (err) {
                 console.log("error");
             }
+
+
         })()
     }
 })
 
-app.post("/add",
+app.post("/recipes",
     body('nimi').isLength({min: 2,max: 25}).withMessage('nimi'),
     body('Ainekset').isLength({min:2,max: 1000}),
     body('ohje').isLength({min: 20,max : 1000}),
@@ -89,7 +94,7 @@ app.post("/add",
     }
 });
 
-app.get("/delete",
+app.delete("/recipes",
     query('id').isNumeric(),
     function (req, res) {
     const errors = validationResult(req);
@@ -114,7 +119,7 @@ app.get("/delete",
     }
 })
 
-app.post('/update',
+app.put('/recipes',
     body('id').isNumeric(),
     body('nimi').isLength({min: 2,max: 25}),
     body('Ainekset').isLength({min:2,max: 1000}),
