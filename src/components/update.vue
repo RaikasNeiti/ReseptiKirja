@@ -47,7 +47,7 @@ name: "update",
       if(confirm("Do you really want to save?")) {
         if (this.nimi !== '' && this.aika !== "" && !isNaN(this.aika) && this.ohje !== "" && this.author !== "") {
           let id = this.$route.query.id;
-         await axios.post('http://localhost:8081/update', {
+          await axios.put('http://localhost:8081/recipes', {
                 nimi: this.nimi,
                 id: this.$route.query.id,
                 Ainekset: JSON.stringify(this.ainekset),
