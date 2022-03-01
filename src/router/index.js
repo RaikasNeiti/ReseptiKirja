@@ -4,6 +4,7 @@ import Home from "@/components/Home";
 import AddSivu from "@/components/AddSivu";
 import recipe from "@/components/recipe";
 import update from "@/components/update";
+import login from "@/components/login"
 
 
 Vue.use(Router)
@@ -12,6 +13,11 @@ const routes= [
         path: "/Add",
         name: "Add",
         component: AddSivu,
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: login,
     },
     {
         path: '/',

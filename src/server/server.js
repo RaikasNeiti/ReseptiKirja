@@ -7,6 +7,14 @@ let bodyParser = require('body-parser')
 app.use(bodyParser.json())
 const {body, query, validationResult} = require('express-validator')
 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json()); // for reading JSON
+
 
 let con = mysql.createConnection({
     host: "localhost",
@@ -18,6 +26,12 @@ const sqlquery = util.promisify(con.query).bind(con);
 
 app.use(express.static('public'));
 app.use(cors())
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.get("/recipes", function (req, res) {
     let sql = "SELECT" + " * " + "FROM recipes"
@@ -148,7 +162,60 @@ app.put('/recipes',
         })()
     }
 });
+app.post("/api/event", urlencodedParser, function (req, res) {
 
+    //console.log("Request body: " + req.body);
+    //console.log("Request body length: " + req.body.getLength);
+    console.log("body: %j", req.body);
+    // get JSON-object from the http-body
+    let jsonObj = req.body;
+
+    let sql = "select password from user where email= ?";
+    (async () => {  // IIFE (Immediately Invoked Function Expression)
+
+            try {
+                const result = await sqlquery(sql, [jsonObj.email]);
+                if(bcrypt.compareSync(jsonObj.salasana, result[0].password)){
+
+                    const accessToken = jwt.sign({name: jsonObj.email}, 'seppo',
+                        {expiresIn: "1h"})
+                    res.status(200).json(accessToken);
+                    console.log("Arvo: "+ jsonObj.email + " salasana: " + result[0].password);
+                    console.log("post")
+                }
+                else {
+                    res.status(400).send("POST was not succesful ");
+                }
+
+            } catch (err) {
+                console.log("Insertion into some (2) table was unsuccessful!" + err);
+                res.status(400).send("POST was not succesful " + err);
+            }}
+
+    )()
+
+});
+
+app.post("/api/token", urlencodedParser, function (req, res) {
+    console.log("body: %j", req.body);
+    let jsonObj = req.body;
+    (async () => {
+            try {
+
+                jwt.verify(jsonObj.token, 'seppo', function (err, decoded){
+                        console.log("user (decoded) " + JSON.stringify(decoded))
+                        res.status(200).send("Onnistu " + jsonObj.token)
+                        console.log(jsonObj.token)
+                    }
+                );
+
+            } catch (err) {
+                console.log("Insertion into some (2) table was unsuccessful!" + err);
+                res.status(400).send("POST was not succesful " + err);
+            }}
+
+    )()
+});
 
 
 let server = app.listen(8081, function () {
