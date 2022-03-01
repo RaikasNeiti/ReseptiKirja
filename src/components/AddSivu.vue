@@ -48,26 +48,31 @@ export default {
     save: async function (){
         if (this.nimi !== '' && this.aika !== "" && !isNaN(this.aika) && this.ohje !== "" && this.author !== "") {
           console.log(this.Ainekset)
-      await axios
-        .post('http://localhost:8081/add',{
-              nimi: this.nimi,
-              Ainekset: JSON.stringify(this.Ainekset),
-              ohje: this.ohje,
-              aika: this.aika,
-              author: this.author
-        })
-          .then(res => {
-            let adress = res.data;
-            if(adress === "parametrit"){
-              alert("virheeliset syötteet")
-            }else {
-              console.log(adress.insertId);
-              this.$router.push({name: 'recipe', query: {id: adress.insertId}})
-            }
+          try {
 
-          })
-          console.log("saved");
 
+            await axios
+                .post('http://localhost:8081/recipes', {
+                  nimi: this.nimi,
+                  Ainekset: JSON.stringify(this.Ainekset),
+                  ohje: this.ohje,
+                  aika: this.aika,
+                  author: this.author
+                })
+                .then(res => {
+                  let adress = res.data;
+                  if (adress === "parametrit") {
+                    alert("virheeliset syötteet")
+                  } else {
+                    console.log(adress.insertId);
+                    this.$router.push({name: 'recipe', query: {id: adress.insertId}})
+                  }
+
+                })
+            console.log("saved");
+          }catch (err){
+            alert("virheeliset syötteet")
+          }
       } else {
         console.log("not Saved")
         alert("Kaikki kohdat täytyy olla täytetty");

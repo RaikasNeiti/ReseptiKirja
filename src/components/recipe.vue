@@ -47,28 +47,28 @@ export default {
     poista: function () {
       if(confirm("Do you really want to delete?")) {
         axios
-            .get('http://localhost:8081/delete?id=' + this.$route.query.id)
+            .delete('http://localhost:8081/recipes?id=' + this.$route.query.id)
             .then(res => {
               let response = res.data;
               console.log(response)
-              this.$router.go(-1)
+              this.$router.push({name: 'home'})
             })
       }
     }
   },
-  created: function () {
-    axios
-        .get('http://localhost:8081/recipe?id='+ this.$route.query.id)
-        .then(res => {
-          let recipe = res.data;
+  created: async function () {
+      axios
+          .get('http://localhost:8081/recipe?id=' + this.$route.query.id)
+          .then(res => {
+            let recipe = res.data;
+            console.log(recipe.status)
+            this.ainekset = JSON.parse(recipe[0].ingredients);
 
-          this.ainekset = JSON.parse(recipe[0].ingredients);
-
-          this.nimi= recipe[0].name;
-          this.ohje = recipe[0].instructions;
-          this.aika = recipe[0].cookingtime;
-          this.author = recipe[0].maker;
-        })
+            this.nimi = recipe[0].name;
+            this.ohje = recipe[0].instructions;
+            this.aika = recipe[0].cookingtime;
+            this.author = recipe[0].maker;
+          })
 
   }
 
