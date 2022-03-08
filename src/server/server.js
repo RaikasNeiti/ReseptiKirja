@@ -210,6 +210,7 @@ app.post("/api/token", urlencodedParser, function (req, res) {
                         res.status(200).json({name: decoded.name})
                     }
                 );
+                console.log("turhaa");
 
             } catch (err) {
                 console.log("Invalid Key" + err);
