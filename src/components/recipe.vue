@@ -69,7 +69,7 @@ export default {
     }
     catch (err){
       console.log(err)
-      await this.$router.push({name: 'login'});
+      await this.$router.push({name: 'login', query: {location: this.$route.name}});
     }
       axios
           .get('http://localhost:8081/recipe?id=' + this.$route.query.id)

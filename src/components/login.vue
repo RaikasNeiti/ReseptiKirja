@@ -29,6 +29,12 @@ name: "login",
     } ).then (res=> {
       console.log(res.data)
           localStorage.setItem("tokenKey", JSON.stringify(res.data))
+          if(this.$route.query.location == null){
+            this.$router.push({name: 'home'})
+          }else
+          {
+            this.$router.push({name: this.$route.query.location});
+          }
         })
   }
   }

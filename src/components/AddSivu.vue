@@ -49,8 +49,7 @@ export default {
           })
     }
     catch (err){
-      console.log(err)
-      await this.$router.push({name: 'login'});
+      await this.$router.push({name: 'login', query: {location: this.$route.name}});
     }
   },
   methods: {

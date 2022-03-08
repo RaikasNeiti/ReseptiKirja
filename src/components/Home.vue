@@ -65,7 +65,7 @@ export default {
     }
     catch (err){
       console.log(err)
-      await this.$router.push({name: 'login'});
+      await this.$router.push({name: 'login', query: {location: this.$route.name}});
     }
 
     await axios
@@ -108,7 +108,7 @@ th{
 #reseptitable{
   background-color: #f8f8f8;
   margin: auto;
-  width: 50%;
+  width: 100%;
   padding: 10px;
   text-align: center;
 
