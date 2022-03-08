@@ -8,9 +8,29 @@
 
 <script>
 
+import axios from "axios";
+
+
 export default {
   name: 'app',
 
+
+  created: async function () {
+    try{
+    this.myToken = JSON.parse(localStorage.getItem("tokenKey"))
+    await axios
+        .post('http://localhost:8081/api/token',
+            "data", {headers: {Authorization:
+                    'Bearer: '+ this.myToken.accessToken}})
+        .then(res => {
+          console.log(res.data)
+        })
+    }
+    catch (err){
+      console.log(err)
+      await this.$router.push({name: 'login'});
+    }
+}
 }
 
 

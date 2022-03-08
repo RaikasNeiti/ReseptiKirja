@@ -37,6 +37,22 @@ export default {
   data: function (){
     return {Ainekset: [], nimi: '', aika: '', ohje: '', author: '', newAines: ''}
   },
+  created: async function () {
+    try{
+      this.myToken = JSON.parse(localStorage.getItem("tokenKey"))
+      await axios
+          .post('http://localhost:8081/api/token',
+              "data", {headers: {Authorization:
+                      'Bearer: '+ this.myToken.accessToken}})
+          .then(res => {
+            console.log(res.data)
+          })
+    }
+    catch (err){
+      console.log(err)
+      await this.$router.push({name: 'login'});
+    }
+  },
   methods: {
     add: function(){
       this.Ainekset.push(this.newAines)

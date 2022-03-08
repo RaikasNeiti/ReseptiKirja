@@ -43,7 +43,7 @@ export default {
 
   },
   data: function (){
-    return {recipes: [], searcharvo: "",recipelist: ''};
+    return {recipes: [], searcharvo: "",recipelist: '', myToken: ""};
 
   },
   methods: {
@@ -52,16 +52,32 @@ export default {
     }
 
   },
-  created: function () {
-      axios
+  created: async function () {
+    try{
+      this.myToken = JSON.parse(localStorage.getItem("tokenKey"))
+      await axios
+          .post('http://localhost:8081/api/token',
+              "data", {headers: {Authorization:
+                      'Bearer: '+ this.myToken.accessToken}})
+          .then(res => {
+            console.log(res.data)
+          })
+    }
+    catch (err){
+      console.log(err)
+      await this.$router.push({name: 'login'});
+    }
+
+    await axios
         .get('http://localhost:8081/recipes')
         .then(res => {
           let tempRecipes = res.data;
-          for(let i = 0; i< tempRecipes.length; i++){
-              this.recipes.push(new Recipe(tempRecipes[i].id,tempRecipes[i].name,tempRecipes[i].cookingtime,tempRecipes[i].maker))
+          for (let i = 0; i < tempRecipes.length; i++) {
+            this.recipes.push(new Recipe(tempRecipes[i].id, tempRecipes[i].name, tempRecipes[i].cookingtime, tempRecipes[i].maker))
           }
           console.log(this.recipes)
         })
+
 
   },
   computed: {

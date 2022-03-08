@@ -178,8 +178,10 @@ app.post("/api/event", urlencodedParser, function (req, res) {
                 if(bcrypt.compareSync(jsonObj.salasana, result[0].password)){
 
                     const accessToken = jwt.sign({name: jsonObj.email}, 'seppo',
-                        {expiresIn: "1h"})
-                    res.status(200).json(accessToken);
+                        {expiresIn: "2h"})
+
+
+                    res.status(200).json({accessToken: accessToken});
                     console.log("Arvo: "+ jsonObj.email + " salasana: " + result[0].password);
                     console.log("post")
                 }
@@ -197,24 +199,22 @@ app.post("/api/event", urlencodedParser, function (req, res) {
 });
 
 app.post("/api/token", urlencodedParser, function (req, res) {
-    console.log("body: %j", req.body);
-    let jsonObj = req.body;
-    (async () => {
+    let authHeader = req.header("authorization");
+    const token = authHeader && authHeader.split(' ')[1]
+    console.log(token);
             try {
-
-                jwt.verify(jsonObj.token, 'seppo', function (err, decoded){
-                        console.log("user (decoded) " + JSON.stringify(decoded))
-                        res.status(200).send("Onnistu " + jsonObj.token)
-                        console.log(jsonObj.token)
+                jwt.verify(token, 'seppo', function (err,decoded){
+                    if(err){
+                        res.status(403).send("Err")
+                    }
+                        res.status(200).json({name: decoded.name})
                     }
                 );
 
             } catch (err) {
-                console.log("Insertion into some (2) table was unsuccessful!" + err);
+                console.log("Invalid Key" + err);
                 res.status(400).send("POST was not succesful " + err);
-            }}
-
-    )()
+            }
 });
 
 

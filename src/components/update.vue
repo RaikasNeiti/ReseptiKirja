@@ -65,13 +65,30 @@ name: "update",
       }
     }
   },
-  created: function () {
+  created: async function () {
+    try {
+      this.myToken = JSON.parse(localStorage.getItem("tokenKey"))
+      await axios
+          .post('http://localhost:8081/api/token',
+              "data", {
+                headers: {
+                  Authorization:
+                      'Bearer: ' + this.myToken.accessToken
+                }
+              })
+          .then(res => {
+            console.log(res.data)
+          })
+    } catch (err) {
+      console.log(err)
+      await this.$router.push({name: 'login'});
+    }
     axios
-        .get('http://localhost:8081/recipe?id='+ this.$route.query.id)
+        .get('http://localhost:8081/recipe?id=' + this.$route.query.id)
         .then(res => {
           let recipe = res.data;
           this.ainekset = JSON.parse(recipe[0].ingredients);
-          this.nimi= recipe[0].name;
+          this.nimi = recipe[0].name;
           this.ohje = recipe[0].instructions;
           this.aika = recipe[0].cookingtime;
           this.author = recipe[0].maker;
