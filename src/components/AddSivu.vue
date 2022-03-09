@@ -22,8 +22,7 @@
 
     <label for="Ohje">Ohje:</label><br>
     <textarea v-model="ohje" id="Ohje"></textarea> <br><br>
-    <label for="Author">Tekijä: </label>
-    <input v-model="author" type="text" id="Author"> <br><br>
+    <label id="Tekija">Tekijä: {{ author }}</label><br><br>
     <button v-on:click="save()">Tallenna</button>
   </div>
 </template>
@@ -45,7 +44,7 @@ export default {
               "data", {headers: {Authorization:
                       'Bearer: '+ this.myToken.accessToken}})
           .then(res => {
-            console.log(res.data)
+            this.author = res.data.name
           })
     }
     catch (err){
@@ -73,7 +72,10 @@ export default {
                   ohje: this.ohje,
                   aika: this.aika,
                   author: this.author
-                })
+                }, {headers: {
+                    Authorization:
+                        'Bearer: ' + this.myToken.accessToken
+                  }})
                 .then(res => {
                   let adress = res.data;
                   if (adress === "parametrit") {

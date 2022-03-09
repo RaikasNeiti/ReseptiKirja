@@ -21,8 +21,7 @@
 
     <label for="Ohje">Ohje:</label><br>
     <textarea v-model="ohje" id="Ohje">Ohje...</textarea> <br><br>
-  <label for="Author">Tekijä: </label>
-  <input v-model="author" type="text" id="Author"> <br><br>
+    <label id="Tekija">Tekijä: {{ author }}</label><br><br>
   <button v-on:click="save()">Päivitä</button>
   </div>
 </template>
@@ -53,8 +52,11 @@ name: "update",
                 Ainekset: JSON.stringify(this.ainekset),
                 ohje: this.ohje,
                 aika: this.aika,
-                author: this.author
-              })
+                author: this.author,
+              }, {headers: {
+              Authorization:
+                  'Bearer: ' + this.myToken.accessToken
+            }})
 
           await this.$router.push({name: 'recipe', query: {id: id}})
           console.log("saved");
@@ -77,7 +79,7 @@ name: "update",
                 }
               })
           .then(res => {
-            console.log(res.data)
+            this.author = res.data.name
           })
     } catch (err) {
       console.log(err)

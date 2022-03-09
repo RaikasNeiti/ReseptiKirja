@@ -3,7 +3,7 @@
     <div id="main">
       <p id="nimi">{{nimi}}</p>
       <p id="author">Tekijä: {{author}}</p>
-      <div id="buttons">
+      <div id="buttons" v-if=visibility>
         <button v-on:click="päivitä()">Päivitä</button>
         <button v-on:click="poista()">Poista</button>
       </div>
@@ -38,7 +38,7 @@ export default {
   name: "recipe",
   props: {},
   data: function (){
-    return {recipe: this.$route.query.id, ainekset: [], nimi: '', aika: '', ohje: '', author: '', newAines: ''}
+    return {recipe: this.$route.query.id, ainekset: [], nimi: '', aika: '', ohje: '', author: '', newAines: '', visibility: false, user: ''}
   },
   methods:{
     päivitä: function () {
@@ -47,10 +47,15 @@ export default {
     poista: function () {
       if(confirm("Do you really want to delete?")) {
         axios
-            .delete('http://localhost:8081/recipes?id=' + this.$route.query.id)
+            .delete('http://localhost:8081/recipes?id=' + this.$route.query.id,{
+              headers: {
+                Authorization:
+                    'Bearer: ' + this.myToken.accessToken
+              }
+
+            })
             .then(res => {
-              let response = res.data;
-              console.log(response)
+              console.log(res.data)
               this.$router.push({name: 'home'})
             })
       }
@@ -64,25 +69,30 @@ export default {
               "data", {headers: {Authorization:
                       'Bearer: '+ this.myToken.accessToken}})
           .then(res => {
-            console.log(res.data)
+            this.user = res.data.name;
+
           })
     }
     catch (err){
       console.log(err)
       await this.$router.push({name: 'login', query: {location: this.$route.name}});
     }
-      axios
-          .get('http://localhost:8081/recipe?id=' + this.$route.query.id)
-          .then(res => {
-            let recipe = res.data;
-            console.log(recipe.status)
-            this.ainekset = JSON.parse(recipe[0].ingredients);
+    axios
+        .get('http://localhost:8081/recipe?id=' + this.$route.query.id)
+        .then(res => {
+          let recipe = res.data;
+          this.ainekset = JSON.parse(recipe[0].ingredients);
 
-            this.nimi = recipe[0].name;
-            this.ohje = recipe[0].instructions;
-            this.aika = recipe[0].cookingtime;
-            this.author = recipe[0].maker;
-          })
+          this.nimi = recipe[0].name;
+          this.ohje = recipe[0].instructions;
+          this.aika = recipe[0].cookingtime;
+          this.author = recipe[0].maker;
+          if(this.user == this.author){
+            this.visibility = true;
+          }
+        })
+
+
 
   }
 

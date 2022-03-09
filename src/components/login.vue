@@ -13,7 +13,6 @@
 
 <script>
 import axios from "axios";
-import router from "@/router";
 
 export default {
 name: "login",
@@ -30,17 +29,13 @@ name: "login",
     } ).then (res=> {
       console.log(res.data)
           localStorage.setItem("tokenKey", JSON.stringify(res.data))
-          if(router.getRoutes().includes(this.$route.query.location)){
-            this.$router.push({name: this.$route.query.location})
-          }else{
-            this.$router.push({name: 'home'})
-          }
-          /*if(this.$route.query.location == null){
+
+          if(this.$route.query.location == null){
             this.$router.push({name: 'home'})
           }else
           {
             this.$router.push({name: this.$route.query.location});
-          }*/
+          }
         })
   }
   }
