@@ -196,7 +196,90 @@ app.delete("/recipes",
              */
 
     }
-})
+});
+
+app.post('/ratings',
+    function (req, res) {
+        const errors = validationResult(req);
+
+        console.log(errors);
+        if(!errors.isEmpty()){
+            res.send("parametrit")
+        }else {
+            let sql = "INSERT INTO ratings(recipeid, rating, comment, user)"
+                + "VALUES('" + req.body.recipeid + "', '" + req.body.rating + "', '"+ req.body.comment +"', '"+ req.body.user +"')";
+            (async () => {
+                let authHeader = req.header("authorization");
+                const token = authHeader && authHeader.split(' ')[1]
+                try {
+                    //verify access token for update the database.
+                    jwt.verify(token, 'seppo', function (err){
+                            if(err){
+                                res.status(403).send("Err")
+                            }
+                            console.log("Acesstoken Verified");
+                            (async () => {
+                                try {
+                                    const rows = await sqlquery(sql);
+                                    console.log(rows);
+                                    res.send(rows);
+                                } catch (err) {
+                                    console.log("error");
+                                }
+                            })()
+
+                        }
+                    );
+                } catch (err) {
+                    console.log("Invalid Key" + err);
+                    res.status(400).send("Post was not succesful: " + err);
+                }
+            })()
+            /*
+            try {
+                console.log("test")
+                const rows = await sqlquery(sql);
+                console.log(rows);
+                res.send(rows);
+            } catch (err) {
+                console.log("error");
+            }
+
+             */
+
+        }
+    });
+
+app.get('/ratings',
+    query('id').isNumeric(),
+    (req, res) => {
+        const errors = validationResult(req);
+        console.log(errors);
+        if (!errors.isEmpty()) {
+            res.send("parametrit")
+        } else {
+            let id = req.query.id;
+            console.log(id);
+            let sql = "SELECT" + " * " + "FROM ratings"
+                + " WHERE recipeid ='" + id + "'";
+            (async () => {
+                try {
+                    let rows = await sqlquery(sql, [id]);
+                    console.log(rows);
+                    if (!rows.length) {
+                        console.log("error");
+                    } else {
+                        res.json(rows);
+                    }
+                } catch (err) {
+                    console.log("error");
+                }
+
+
+            })()
+        }
+    });
+
 
 app.put('/recipes',
     body('id').isNumeric(),
