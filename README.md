@@ -12,6 +12,22 @@ CREATE TABLE recipes(
 	cookingtime INT,
 	maker VARCHAR(25),
 	PRIMARY KEY(ID));
+	
+CREATE TABLE IF NOT EXISTS recipedb.user (
+  username VARCHAR(16) NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(60) NOT NULL,
+  create_time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP);
+ 
+ 
+CREATE TABLE IF NOT EXISTS recipedb.rating (
+    id INT AUTO_INCREMENT,
+    recipeid INT,
+    rating INT,
+    comment VARCHAR(1000),
+    user VARCHAR(16),
+    PRIMARY KEY(id)
+    );
 ```
 
 ### REST API

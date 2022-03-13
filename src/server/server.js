@@ -206,7 +206,7 @@ app.post('/ratings',
         if(!errors.isEmpty()){
             res.send("parametrit")
         }else {
-            let sql = "INSERT INTO ratings(recipeid, rating, comment, user)"
+            let sql = "INSERT INTO rating(recipeid, rating, comment, user)"
                 + "VALUES('" + req.body.recipeid + "', '" + req.body.rating + "', '"+ req.body.comment +"', ?)";
             (async () => {
                 let authHeader = req.header("authorization");
@@ -224,7 +224,7 @@ app.post('/ratings',
                                     console.log(rows);
                                     res.send(rows);
                                 } catch (err) {
-                                    console.log("error");
+                                    console.log("error catch " + err);
                                 }
                             })()
 
@@ -260,7 +260,7 @@ app.get('/ratings',
         } else {
             let id = req.query.id;
             console.log(id);
-            let sql = "SELECT" + " * " + "FROM ratings"
+            let sql = "SELECT" + " * " + "FROM rating"
                 + " WHERE recipeid ='" + id + "'";
             (async () => {
                 try {
@@ -272,7 +272,7 @@ app.get('/ratings',
                         res.json(rows);
                     }
                 } catch (err) {
-                    console.log("error");
+                    console.log("error catch: "  + err);
                 }
 
 
