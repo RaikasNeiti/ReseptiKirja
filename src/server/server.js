@@ -207,20 +207,20 @@ app.post('/ratings',
             res.send("parametrit")
         }else {
             let sql = "INSERT INTO ratings(recipeid, rating, comment, user)"
-                + "VALUES('" + req.body.recipeid + "', '" + req.body.rating + "', '"+ req.body.comment +"', '"+ req.body.user +"')";
+                + "VALUES('" + req.body.recipeid + "', '" + req.body.rating + "', '"+ req.body.comment +"', ?)";
             (async () => {
                 let authHeader = req.header("authorization");
                 const token = authHeader && authHeader.split(' ')[1]
                 try {
                     //verify access token for update the database.
-                    jwt.verify(token, 'seppo', function (err){
+                    jwt.verify(token, 'seppo', function (err, decoded){
                             if(err){
                                 res.status(403).send("Err")
                             }
                             console.log("Acesstoken Verified");
                             (async () => {
                                 try {
-                                    const rows = await sqlquery(sql);
+                                    const rows = await sqlquery(sql, [decoded.name]);
                                     console.log(rows);
                                     res.send(rows);
                                 } catch (err) {
