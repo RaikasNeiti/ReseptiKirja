@@ -23,7 +23,7 @@ name: "login",
   methods: {
   logi: async function (){
     await axios
-    .post('http://localhost:8081/api/event', {
+    .post('http://localhost:8081/api/login', {
       email: this.emails,
       salasana: this.password
     } ).then (res=> {
